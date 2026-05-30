@@ -225,6 +225,19 @@ export interface CallLog {
   timestamp: FirebaseTimestamp;
 }
 
+// ─── Voice Profile ───────────────────────────────────────────────────────
+export interface VoiceProfile {
+  id: string;
+  name: string;
+  type: string;
+  description?: string;
+  accent?: string;
+  speed?: 'slow' | 'normal' | 'fast' | string;
+  gender?: string;
+  sampleUrl?: string;
+  active?: boolean;
+}
+
 export interface CallBooking {
   time: string;
   name: string;

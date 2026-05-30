@@ -2,6 +2,7 @@ import { Router } from 'express';
 import multer from 'multer';
 import { getVoiceProfiles, createVoiceProfile, updateVoiceProfile, deleteVoiceProfile } from '../services/dataService.js';
 import { isFirebaseInitialized, getFirebaseApp } from '../config/firebase.js';
+import { getStorage } from 'firebase-admin/storage';
 import type { ApiResponse } from '../types/index.js';
 
 const router = Router();
@@ -35,11 +36,12 @@ router.post('/', upload.single('sample'), async (req, res, next) => {
 
     if (sampleBuffer && isFirebaseInitialized()) {
       try {
-        const app = getFirebaseApp();
-        const bucket = app.storage().bucket();
-        const filename = `voice-samples/${Date.now()}-${req.file?.originalname}`.replace(/\s+/g, '_');
-        const file = bucket.file(filename);
-        await file.save(sampleBuffer, { resumable: false, contentType: req.file?.mimetype || 'audio/mpeg' });
+          const app = getFirebaseApp();
+          const storage = getStorage(app);
+          const bucket = storage.bucket();
+          const filename = `voice-samples/${Date.now()}-${req.file?.originalname}`.replace(/\s+/g, '_');
+          const file = bucket.file(filename);
+          await file.save(sampleBuffer, { resumable: false, contentType: req.file?.mimetype || 'audio/mpeg' });
         // Make public for demo purposes; for production consider signed URLs and ACLs
         try { await file.makePublic(); } catch {}
         const publicUrl = `https://storage.googleapis.com/${bucket.name}/${filename}`;

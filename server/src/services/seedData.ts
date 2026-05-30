@@ -1,5 +1,5 @@
 import type {
-  Conversation, Message, Lead, Automation, WorkspaceSettings, CallLog, Channel, FirebaseTimestamp,
+  Conversation, Message, Lead, Automation, WorkspaceSettings, CallLog, Channel, FirebaseTimestamp, VoiceProfile,
 } from '../types/index.js';
 
 // ─── Helpers ─────────────────────────────────────────────────────────────────
@@ -260,6 +260,7 @@ export interface SeedData {
   automations: Map<string, Automation>;
   settings: Record<string, WorkspaceSettings>;
   callLogs: Map<string, CallLog>;
+  voiceProfiles?: VoiceProfile[];
 }
 
 // ─── Main Generator ─────────────────────────────────────────────────────────
